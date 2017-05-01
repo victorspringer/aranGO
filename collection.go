@@ -317,11 +317,7 @@ func (col *Collection) Delete(key string) error {
 		return errors.New("Key must not be empty")
 	}
 
-	if col.Type == 2 {
-		res, err = col.db.get("document", col.Name+"/"+key, "DELETE", nil, nil, nil)
-	} else {
-		res, err = col.db.get("edge", col.Name+"/"+key, "DELETE", nil, nil, nil)
-	}
+	res, err = col.db.get("document", col.Name+"/"+key, "DELETE", nil, nil, nil)
 	if err != nil {
 		return err
 	}
@@ -330,7 +326,7 @@ func (col *Collection) Delete(key string) error {
 	case 202, 200:
 		return nil
 	default:
-		return errors.New("Document don't exist or revision error")
+		return errors.New("Error: " + res.RawText())
 
 	}
 }

@@ -70,8 +70,8 @@ func (d *Database) ExecuteTran(t *Transaction) error {
 		return err
 	}
 
-	if resp.Status() == 400 {
-		return errors.New("Error executing transaction")
+	if resp.Status() != 200 || resp.Status() != 201 {
+		return errors.New("Error executing transaction: " + resp.RawText())
 	}
 
 	return nil
